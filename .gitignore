@@ -35,3 +35,9 @@
 
 # Composer PHAR
 /composer.phar
+/composer.lock
+
+# Eclipse
+*.proj*
+.settings
+/.settings/*
