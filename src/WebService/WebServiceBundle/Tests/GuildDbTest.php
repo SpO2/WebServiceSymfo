@@ -40,6 +40,29 @@ class GuildDbTest extends WebTestCase
 		$this->assertEquals($guild, $testGuild);
 	}
 	
+	public function testFields()
+	{
+		$em = $this->getEntityManager();
+		$em = $this->getEntityManager();
+		$guild = $this->newGuild();
+		$testGuild = $em->getRepository('WebService\WebServiceBundle\Entity\Guild')
+			->find($guild->getId());
+		$count = 0;
+		if ((!empty($testGuild->getName())) && ($testGuild->getName() == 'guild')){
+			$count++;
+		}
+		if ((!empty($testGuild->getBanner())) && ($testGuild->getBanner() == 'banner')){
+			$count++;
+		}
+		if(!empty($testGuild->getCreatedAt()) && ($testGuild->getCreatedAt() != '')){
+			$count++;
+		}
+		if(!empty($testGuild->getUpdatedAt()) && ($testGuild->getUpdatedAt() != '')){
+			$count++;
+		}
+		$this->assertEquals($count, 4);
+	}
+	
 	public function testUpdateGuild()
 	{
 		$em = $this->getEntityManager();

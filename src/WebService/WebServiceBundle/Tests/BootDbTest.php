@@ -27,7 +27,7 @@ class BootDbTest extends WebTestCase{
 		$boot->setLevel(1);
 		$boot->setName('boot');
 		$boot->setRarity('rare');
-		$boot->setWeight('12');
+		$boot->setWeight(12);
 		$em->persist($boot);
 		$em->flush();
 		return $boot;
@@ -40,6 +40,34 @@ class BootDbTest extends WebTestCase{
 		$testBoot = $em->getRepository('WebService\WebServiceBundle\Entity\Boot')
 			->find($boot->getId());
 		$this->assertEquals($boot, $testBoot);
+	}
+	
+	public function testFields()
+	{
+		$em = $this->getEntityManager();
+		$boot = $this->newBoot();
+		$testBoot = $em->getRepository('WebService\WebServiceBundle\Entity\Boot')
+			->find($boot->getId());
+		$count = 0;
+		if ((!empty($testBoot->getLevel())) && ($testBoot->getLevel() == 1)){
+			$count++;
+		}
+		if ((!empty($testBoot->getName())) && ($testBoot->getName() == 'boot')){
+			$count++;
+		}
+		if ((!empty($testBoot->getRarity())) && ($testBoot->getRarity() == 'rare')){
+			$count++;
+		}
+		if ((!empty($testBoot->getWeight())) && ($testBoot->getWeight() == 12)){
+			$count++;
+		}
+		if(!empty($testBoot->getCreatedAt()) && ($testBoot->getCreatedAt() != '')){
+			$count++;
+		}
+		if(!empty($testBoot->getUpdatedAt()) && ($testBoot->getUpdatedAt() != '')){
+			$count++;
+		}
+		$this->assertEquals($count, 6);
 	}
 	
 	public function testUpdateBoot()

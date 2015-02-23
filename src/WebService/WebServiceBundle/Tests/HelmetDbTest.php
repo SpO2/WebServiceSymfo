@@ -42,6 +42,34 @@ class HelmetDbTest extends WebTestCase
 		$this->assertEquals($helmet, $testHelmet);
 	}
 	
+	public function testFields()
+	{
+		$em = $this->getEntityManager();
+		$helmet = $this->newHelmet();
+		$testHelmet = $em->getRepository('WebService\WebServiceBundle\Entity\Helmet')
+			->find($helmet->getId());
+		$count = 0;
+		if ((!empty($testHelmet->getLevel())) && ($testHelmet->getLevel() == 1)){
+			$count++;
+		}
+		if ((!empty($testHelmet->getName())) && ($testHelmet->getName() == 'Helmet')){
+			$count++;
+		}
+		if ((!empty($testHelmet->getRarity())) && ($testHelmet->getRarity() == 'rare')){
+			$count++;
+		}
+		if ((!empty($testHelmet->getWeight())) && ($testHelmet->getWeight() == 12)){
+			$count++;
+		}
+		if(!empty($testHelmet->getCreatedAt()) && ($testHelmet->getCreatedAt() != '')){
+			$count++;
+		}
+		if(!empty($testHelmet->getUpdatedAt()) && ($testHelmet->getUpdatedAt() != '')){
+			$count++;
+		}
+		$this->assertEquals($count, 6);
+	}
+	
 	public function testUpdateHelmet()
 	{
 		$em = $this->getEntityManager();
