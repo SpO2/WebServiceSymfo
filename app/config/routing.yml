@@ -2,3 +2,11 @@ web_service_web_service:
     resource: "@WebServiceWebServiceBundle/Resources/config/routing.yml"
     prefix:   /
 
+nelmio_api_doc_index:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix: /api/doc
+    
+ws_rest_default:
+    type: rest
+    resource: WebService\WebServiceBundle\Controller\DefaultRestController
+    prefix: /api

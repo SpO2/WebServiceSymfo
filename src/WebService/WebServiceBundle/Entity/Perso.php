@@ -106,6 +106,8 @@ class Perso extends BaseEntity
 	}
 	
 	
-	
+	public function __toString(){
+		return $this->name;
+	}
 	
 }
