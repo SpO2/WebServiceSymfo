@@ -4,6 +4,10 @@ namespace WebService\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use WebService\WebServiceBundle\Entity\BaseEntity;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation\MaxDepth;
+use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
  * @ORM\Entity
@@ -13,20 +17,26 @@ class Register extends BaseEntity
 {
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Groups({"ById"})
 	 */
 	private $level;
 	/**
 	 * @ORM\Column(type="string")
+	 * @Groups({"ById"})
 	 */
 	private $rang;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Guild", inversedBy="register")
 	 * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
+	 * @Groups({"ById"})
+	 * @MaxDepth(2)
 	 */
 	private $guild;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="register")
 	 * @ORM\JoinColumn(name="perso_id", referencedColumnName="id")
+	 * @Groups({"ById"})
+	 * @MaxDepth(2)
 	 */
 	private $perso;
 	

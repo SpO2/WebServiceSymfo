@@ -4,6 +4,7 @@ namespace WebService\WebServiceBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use FOS\RestBundle\Controller\Annotations\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use WebService\WebServiceBundle\Entity\Perso;
 use WebService\WebServiceBundle\Entity\Guild;
@@ -12,6 +13,7 @@ use WebService\WebServiceBundle\Entity\Helmet;
 use WebService\WebServiceBundle\Entity\Register;
 use WebService\WebServiceBundle\Form\RegisterType;
 use WebService\WebServiceBundle\Form\PersoType;
+use JMS\Serializer\SerializationContext;
 
 class DefaultRestController extends FOSRestController {
 	
@@ -21,12 +23,14 @@ class DefaultRestController extends FOSRestController {
 	 *   section="Perso entity",
 	 *   description="Get all perso from database." 
 	 * )
+	 *
 	 */
 	public function getAllPersoAction(){
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Perso')
 			->findAll();
-		$view = $this->view(array("persos" => $data),200);
+		$view = $this->view(array("persos" => $data),200);		
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}	
 	
@@ -45,6 +49,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		if($data){
 			$view = $this->view(array("perso" => $data),200);
+			$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		}else{
 			$view = $this->view(array("message" => "No data"),404);
 		}
@@ -206,6 +211,7 @@ class DefaultRestController extends FOSRestController {
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Guild')
 			->findAll();
 		$view = $this->view(array("guilds" => $data), 200);
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 	
@@ -224,6 +230,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		if($data){
 			$view = $this->view(array("guild" => $data), 200);
+			$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		}else{
 			$view = $this->view(array("message" => "No data"),404);
 		}
@@ -334,6 +341,7 @@ class DefaultRestController extends FOSRestController {
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Boot')
 			->findAll();
 		$view = $this->view(array("boots" => $data),200);
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 
@@ -352,6 +360,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		if($data){
 			$view = $this->view(array("boot" => $data),200);
+			$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		}else{
 			$view = $this->view(array("message" => "No data"),404);
 		}
@@ -500,8 +509,9 @@ class DefaultRestController extends FOSRestController {
 	public function getAllHelmetAction(){
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Helmet')
-		->findAll();
+			->findAll();
 		$view = $this->view(array("helmets" => $data),200);
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 	
@@ -520,6 +530,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		if($data){
 			$view = $this->view(array("helmet" => $data),200);
+			$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		}else{
 			$view = $this->view(array("message" => "No data"),404);
 		}

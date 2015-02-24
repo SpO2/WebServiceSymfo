@@ -4,6 +4,8 @@ namespace WebService\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use WebService\WebServiceBundle\Entity\BaseEntity;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity
@@ -15,23 +17,28 @@ class Stuff extends BaseEntity
 {
 	/**
 	 * @ORM\Column(type="string", length=100)
+	 * @Groups({"Default","ById", "StuffById"})
 	 */
 	private $name;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="stuff")
 	 * @ORM\JoinColumn(name="perso_id", referencedColumnName="id")
+	 * @Groups({"ById", "StuffById"})
 	 */
 	private $perso;
 	/**
 	 * @ORM\Column(type="string", length=100)
+	 * @Groups({"ById", "StuffById"})
 	 */
 	private $Rarity;
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Groups({"Default","ById", "StuffById"})
 	 */
 	private $level;
 	/**
 	 * @ORM\Column(type="integer")
+	 * @Groups({"Default","ById", "StuffById"})
 	 */
 	private $weight;
 	

@@ -4,6 +4,8 @@ namespace WebService\WebServiceBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use WebService\WebServiceBundle\Entity\BaseEntity;
+use JMS\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity
@@ -13,14 +15,17 @@ class Guild extends BaseEntity
 {
 	/**
 	 * @ORM\Column(type="string", length=100)
+	 * @Groups({"Default","ById"})
 	 */
 	private $name;
 	/**
 	 * @ORM\Column(type="string", length=100)
+	 * @Groups({"Default","ById"})
 	 */
 	private $banner;
 	/**
-	 * @ORM\OneToMany(targetEntity="Register", mappedBy="perso")
+	 * @ORM\OneToMany(targetEntity="Register", mappedBy="guild")
+	 * @Groups({"ById"})
 	 */
 	private $register;
 	
