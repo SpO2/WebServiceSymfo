@@ -280,6 +280,42 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * @Rest\Post("guild/remove/{id}")
+	 * @param integer $id
+	 * @ApiDoc(
+	 *   description="Delete guild in database.",
+	 *   requirements={
+	 *   	{
+	 *   		"name" = "id",
+	 *   		"dataType" = "integer",
+	 *   		"requirement" = "Guild id",
+	 *   		"description" = "The id of the guild."
+	 *   	}
+	 *   },
+	 *   section="Guild entity"
+	 *   )
+	 */
+	public function putRemoveGuildAction($id){
+		$em = $this->getDoctrine()->getManager();
+		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Guild')
+			->findOneById($id);
+		if ($data){
+			$em->remove($data);
+			$em->flush();
+			$verifyData = $em->getRepository('WebService\WebServiceBundle\Entity\Guild')
+				->findOneById($id);
+			if ($verifyData){
+				$view = $this->view(array("message" => "Delete failed"),422);
+			}else{
+				$view = $this->view(array("message" => "Entity deleted with success."),200);
+			}
+		}else{
+			$view = $this->view(array("message" => "Entity not found"),418);
+		}
+		return $this->handleView($view);
+	}
+	
+	/**
 	 * @Rest\Post("guild/{id}")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(

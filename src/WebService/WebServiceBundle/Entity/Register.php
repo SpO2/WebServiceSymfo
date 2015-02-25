@@ -27,14 +27,14 @@ class Register extends BaseEntity
 	private $rang;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Guild", inversedBy="register")
-	 * @ORM\JoinColumn(name="guild_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="guild_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @Groups({"ById"})
 	 * @MaxDepth(2)
 	 */
 	private $guild;
 	/**
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="register")
-	 * @ORM\JoinColumn(name="perso_id", referencedColumnName="id")
+	 * @ORM\JoinColumn(name="perso_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @Groups({"ById"})
 	 * @MaxDepth(2)
 	 */
