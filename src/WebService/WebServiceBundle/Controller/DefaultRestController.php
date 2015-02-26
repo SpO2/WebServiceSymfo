@@ -13,6 +13,9 @@ use WebService\WebServiceBundle\Entity\Helmet;
 use WebService\WebServiceBundle\Entity\Register;
 use WebService\WebServiceBundle\Form\RegisterType;
 use WebService\WebServiceBundle\Form\PersoType;
+use WebService\WebServiceBundle\Form\StuffType;
+use WebService\WebServiceBundle\Form\BootType;
+use WebService\WebServiceBundle\Form\GuildType;
 use JMS\Serializer\SerializationContext;
 
 class DefaultRestController extends FOSRestController {
@@ -263,7 +266,7 @@ class DefaultRestController extends FOSRestController {
 		$em = $this->getDoctrine()->getManager();
 		
 		$entity = new Guild();
-		$form = $this->createForm(new PersoType(),
+		$form = $this->createForm(new GuildType(),
 				$entity, array('csrf_protection' => false));
 		$request = $this->getRequest()->request->all();
 		$form->submit($request);
@@ -312,6 +315,7 @@ class DefaultRestController extends FOSRestController {
 		}else{
 			$view = $this->view(array("message" => "Entity not found"),418);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 	
@@ -344,7 +348,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		$beforeUpdate = $data->getUpdatedAt();
 		if ($data){
-			$form = $this->createForm(new PersoType(),
+			$form = $this->createForm(new GuildType(),
 					$data, array('csrf_protection' => false));
 			$request = $this->getRequest()->request->all();
 			$form->submit($request);
@@ -362,6 +366,7 @@ class DefaultRestController extends FOSRestController {
 		}else{
 			$view = $this->view(array("message" => "Entity not found"),418);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 
@@ -425,7 +430,7 @@ class DefaultRestController extends FOSRestController {
 	 *   		"name" = "level",
 	 *   		"dataType" = "integer",
 	 *   		"requirement" = "0..100",
-	 *   		"description" = "The level of the boots0"
+	 *   		"description" = "The level of the boots"
 	 *   	},
 	 *   	{
 	 *   		"name" = "weight",
@@ -450,19 +455,22 @@ class DefaultRestController extends FOSRestController {
 		$request = $this->getRequest()->request->all();
 		
 		$entity = new Boot();
-		$form = $this->createForm(new PersoType(),
+		$form = $this->createForm(new StuffType(),
 					$entity, array('csrf_protection' => false));
 		$request = $this->getRequest()->request->all();
 		$form->submit($request);
 		if($form->isValid()){
 			$em->persist($entity);
 			$em->flush();
-		}
-		if($entity->getId()>0){
-			$view = $this->view(array("boot" => $entity),200);
+			if($entity->getId()>0){
+				$view = $this->view(array("boot" => $entity),200);
+			}else{
+				$view = $this->view(array("message" => "No data"),406);
+			}
 		}else{
-			$view = $this->view(array("message" => "No data"),406);
+			$view = $this->view(array("message" => "Cannot Insert Data"),406);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 
@@ -514,7 +522,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		$beforeUpdate = $data->getUpdatedAt();
 		if ($data){
-			$form = $this->createForm(new PersoType(),
+			$form = $this->createForm(new StuffType(),
 					$data, array('csrf_protection' => false));
 			$request = $this->getRequest()->request->all();
 			$form->submit($request);
@@ -532,6 +540,7 @@ class DefaultRestController extends FOSRestController {
 		}else{
 			$view = $this->view(array("message" => "Entity not found"),418);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 		
@@ -620,19 +629,22 @@ class DefaultRestController extends FOSRestController {
 		$request = $this->getRequest()->request->all();
 	
 		$entity = new Helmet();
-		$form = $this->createForm(new PersoType(),
+		$form = $this->createForm(new StuffType(),
 					$entity, array('csrf_protection' => false));
 		$request = $this->getRequest()->request->all();
 		$form->submit($request);
 		if($form->isValid()){
 			$em->persist($entity);
 			$em->flush();
-		}
-		if($entity->getId()>0){
-			$view = $this->view(array("helmet" => $entity),200);
+			if($entity->getId()>0){
+				$view = $this->view(array("helmet" => $entity),200);
+			}else{
+				$view = $this->view(array("message" => "No data"),406);
+			}
 		}else{
-			$view = $this->view(array("message" => "No data"),406);
+			$view = $this->view(array("message" => "Cannot insert data."),406);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 	
@@ -684,7 +696,7 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		$beforeUpdate = $data->getUpdatedAt();
 		if ($data){
-			$form = $this->createForm(new PersoType(),
+			$form = $this->createForm(new StuffType(),
 					$data, array('csrf_protection' => false));
 			$request = $this->getRequest()->request->all();
 			$form->submit($request);
@@ -702,6 +714,7 @@ class DefaultRestController extends FOSRestController {
 		}else{
 			$view = $this->view(array("message" => "Entity not found"),418);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['StuffById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 	
@@ -758,6 +771,7 @@ class DefaultRestController extends FOSRestController {
 		}else{
 			$view = $this->view(array("message" => "No data"),406);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 
@@ -820,6 +834,7 @@ class DefaultRestController extends FOSRestController {
 		else{
 			$view = $this->view(array("message" => "Entity not found"),422);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 }

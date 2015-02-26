@@ -30,7 +30,7 @@ class Stuff extends BaseEntity
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"ById", "StuffById"})
 	 */
-	private $Rarity;
+	private $rarity;
 	/**
 	 * @ORM\Column(type="integer")
 	 * @Groups({"Default","ById", "StuffById"})
@@ -57,10 +57,10 @@ class Stuff extends BaseEntity
 		return $this;
 	}
 	public function getRarity() {
-		return $this->Rarity;
+		return $this->rarity;
 	}
-	public function setRarity($Rarity) {
-		$this->Rarity = $Rarity;
+	public function setRarity($rarity) {
+		$this->rarity = $rarity;
 		return $this;
 	}
 	public function getLevel() {
