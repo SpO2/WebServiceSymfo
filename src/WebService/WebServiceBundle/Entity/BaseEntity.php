@@ -17,6 +17,8 @@ use JMS\Serializer\Annotation\Groups;
 class BaseEntity 
 {
 	/**
+	 * The id of the entity.
+	 * @var \Integer.
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
 	 * @ORM\GeneratedValue(strategy="AUTO")
@@ -25,12 +27,16 @@ class BaseEntity
 	 */
 	protected $id;
 	/**
+	 * The date of creation.
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 * @Expose
 	 * @Groups({"Default", "ById"})
 	 */
 	protected $createdAt;
 	/**
+	 * The date of update.
+	 * @var \DateTime
 	 * @ORM\Column(type="datetime")
 	 * @Expose
 	 * @Groups({"Default", "ById"})

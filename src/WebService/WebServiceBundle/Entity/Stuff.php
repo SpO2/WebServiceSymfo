@@ -22,7 +22,7 @@ class Stuff extends BaseEntity
 {
 	/**
 	 * The name of the stuff.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default","ById", "StuffById"})
 	 */
@@ -37,21 +37,21 @@ class Stuff extends BaseEntity
 	private $perso;
 	/**
 	 * The rarity of the stuff.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"ById", "StuffById"})
 	 */
 	private $rarity;
 	/**
 	 * The level of the stuff.
-	 * @var Integer.
+	 * @var \Integer.
 	 * @ORM\Column(type="integer")
 	 * @Groups({"Default","ById", "StuffById"})
 	 */
 	private $level;
 	/**
 	 * The weight of the stuff.
-	 * @var Integer.
+	 * @var \Integer.
 	 * @ORM\Column(type="integer")
 	 * @Groups({"Default","ById", "StuffById"})
 	 */

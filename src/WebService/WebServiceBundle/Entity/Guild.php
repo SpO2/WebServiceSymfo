@@ -19,14 +19,14 @@ class Guild extends BaseEntity
 {
 	/**
 	 * The name of the guild.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default","ById"})
 	 */
 	private $name;
 	/**
 	 * The banner of the guild.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default","ById"})
 	 */

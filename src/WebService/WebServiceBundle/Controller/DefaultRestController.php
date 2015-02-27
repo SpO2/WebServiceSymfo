@@ -21,29 +21,43 @@ use JMS\Serializer\SerializationContext;
 class DefaultRestController extends FOSRestController {
 	
 	/**
+	 * Get all the perso from the database without linked resources.
+	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @Rest\Get("perso")
 	 * @ApiDoc(
 	 *   section="Perso entity",
-	 *   description="Get all perso from database." 
-	 * )
-	 *
+	 *   description="Get all perso from database.", 
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not Found"
+	 *   }
+	 *)
 	 */
 	public function getAllPersoAction(){
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Perso')
 			->findAll();
-		$view = $this->view(array("persos" => $data),200);		
+		if ($data){
+			$view = $this->view(array("persos" => $data),200);
+		}else{
+			$view = $this->view(array("message" => "No data"),404);
+		}		
 		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}	
 	
 	/**
+	 * Get a perso by his Id, with the linked resources. MaxDepht = 1.
 	 * @Rest\Get("perso/{id}")
 	 * @param integer $id Id of the perso instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   section="Perso entity",
-	 *   description="Get perso from database by ID." 
+	 *   description="Get perso from database by ID." ,
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not Found"
+	 *   }
 	 * )
 	 */
 	public function getPersoByIdAction($id){
@@ -60,6 +74,7 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Insert a perso in the database.
 	 * @Rest\Put("perso")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
@@ -99,7 +114,7 @@ class DefaultRestController extends FOSRestController {
 	 *   section="Perso entity",
 	 *   statusCodes={
 	 *   	200 = "Ok",
-	 *   	404 = "Not Found"
+	 *   	406 = "No Data"
 	 *   }
 	 * )
 	 * 
@@ -127,6 +142,7 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Update a perso in the database.
 	 * @Rest\Post("perso/{id}")
 	 * @param integer $id Id of the perso instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
@@ -167,7 +183,8 @@ class DefaultRestController extends FOSRestController {
 	 *   section="Perso entity",
 	 *   statusCodes={
 	 *   	200 = "Ok",
-	 *   	404 = "Not Found"
+	 *      418 = "I’m a teapot",
+	 *   	422 = "Unprocessable entity"
 	 *   }
 	 * )
 	 * 
@@ -202,10 +219,15 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Get all the guild from the database, without linked resources.
 	 * @Rest\Get("guild")
 	 * @ApiDoc(
 	 *   section="Guild entity",
-	 *   description="Get all guild from database." 
+	 *   description="Get all guild from database.",
+	 *   statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   } 
 	 * ) 
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 */
@@ -213,18 +235,27 @@ class DefaultRestController extends FOSRestController {
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Guild')
 			->findAll();
-		$view = $this->view(array("guilds" => $data), 200);
+		if ($data){
+			$view = $this->view(array("guilds" => $data), 200);
+		}else{
+			$view = $this->view(array("message" => "No data"),404);
+		}
 		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 	
 	/**
+	 * Get a guild from the database with her linked resources.
 	 * @Rest\Get("guild/{id}")
 	 * @param integer $id Id of the guild instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   section="Guild entity",
-	 *   description="Get guild from database by ID." 
+	 *   description="Get guild from database by ID.",
+	 *   statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   } 
 	 * )
 	 */
 	public function getGuildByIdAction($id){
@@ -233,14 +264,15 @@ class DefaultRestController extends FOSRestController {
 			->findOneById($id);
 		if($data){
 			$view = $this->view(array("guild" => $data), 200);
-			$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		}else{
 			$view = $this->view(array("message" => "No data"),404);
 		}
+		$view->setSerializationContext(SerializationContext::create()->setGroups(['ById'])->enableMaxDepthChecks());
 		return $this->handleView($view);
 	}
 
 	/**
+	 * Insert a guild in the database.
 	 * @Rest\Put("guild")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
@@ -259,8 +291,12 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The banner of the guild."
 	 *   	}
 	 *   },
-	 *   section="Guild entity"
-	 *   )
+	 *   section="Guild entity",
+	 *   statusCodes={
+	 *   	200 = "Ok",
+	 *   	406 = "Not Acceptable"
+	 *   }
+	 *)
 	 */
 	public function putGuildAction(){
 		$em = $this->getDoctrine()->getManager();
@@ -283,8 +319,9 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Delete a guild from the database.
 	 * @Rest\Post("guild/remove/{id}")
-	 * @param integer $id
+	 * @param integer $id Id of the guild instance.
 	 * @ApiDoc(
 	 *   description="Delete guild in database.",
 	 *   requirements={
@@ -295,8 +332,13 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The id of the guild."
 	 *   	}
 	 *   },
-	 *   section="Guild entity"
-	 *   )
+	 *   section="Guild entity",
+	 *   statusCodes={
+	 *   	200 = "Ok",
+	 *   	418 = "I’m a teapot",
+	 *   	422 = "Unprocessable entity"
+	 *   }
+	 *)
 	 */
 	public function putRemoveGuildAction($id){
 		$em = $this->getDoctrine()->getManager();
@@ -320,7 +362,9 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Update a guild in the database.
 	 * @Rest\Post("guild/{id}")
+	 * @param integer $id Id of the guild instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   description="Update guild in database.",
@@ -338,8 +382,13 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The banner of the guild."
 	 *   	}
 	 *   },
-	 *   section="Guild entity"
-	 *   )
+	 *   section="Guild entity",
+	 *   statusCodes={
+	 *   	200 = "Ok",
+	 *   	418 = "I’m a teapot",
+	 *   	422 = "Unprocessable entity"
+	 *   }
+	 *)
 	 */
 	public function postGuildAction($id){
 		$em = $this->getDoctrine()->getManager();
@@ -371,28 +420,42 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Get all boot from the database, without linked resources.
 	 * @Rest\Get("boot")
 	 * @ApiDoc(
 	 *   section="Boot entity",
-	 *   description="Get all boot from database."
-	 * )
+	 *   description="Get all boot from database.",
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   }
+	 *)
 	 */
 	public function getAllBootAction(){
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Boot')
 			->findAll();
-		$view = $this->view(array("boots" => $data),200);
+		if ($data){
+			$view = $this->view(array("boots" => $data),200);
+		}else{
+			$view = $this->view(array("message" => "No data"),404);
+		}
 		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 
 	/**
+	 * Get a boot by her id, with linked resources.
 	 * @Rest\Get("boot/{id}")
 	 * @param integer $id Id of the boot instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   section="Boot entity",
-	 *   description="Get boot from database by ID."
+	 *   description="Get boot from database by ID.",
+	 *  statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   }
 	 * )
 	 */
 	public function getBootByIdAction($id){
@@ -409,6 +472,7 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Insert a boot in the database.
 	 * @Rest\Put("boot")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
@@ -445,7 +509,11 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso that holds the boots."
 	 *   	}
 	 *   },
-	 * section="Boot entity"
+	 * section="Boot entity",
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	406 = "Not Acceptable"
+	 *   }
 	 * )
 	 *   
 	 **/
@@ -475,7 +543,9 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Update a boot in the database.
 	 * @Rest\Post("boot/{id}")
+	 * @param integer $id Id of the boot instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   description="Update boot in database.",
@@ -511,7 +581,12 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso that holds the boots."
 	 *   	}
 	 *   },
-	 * section="Boot entity"
+	 * section="Boot entity",
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	418 = "I’m a teapot",
+	 *   	422 = "Unprocessable entity"
+	 *   }
 	 * )
 	 *
 	 **/
@@ -545,28 +620,42 @@ class DefaultRestController extends FOSRestController {
 	}
 		
 	/**
+	 * Get all helmet from the database, without linked resources.
 	 * @Rest\Get("helmet")
 	 * @ApiDoc(
 	 *   section="Helmet entity",
-	 *   description="Get all helmet from database."
+	 *   description="Get all helmet from database.",
+	 *  statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   } 
 	 * )
 	 */
 	public function getAllHelmetAction(){
 		$em = $this->getDoctrine()->getManager();
 		$data = $em->getRepository('WebService\WebServiceBundle\Entity\Helmet')
 			->findAll();
-		$view = $this->view(array("helmets" => $data),200);
+		if ($data){
+			$view = $this->view(array("helmets" => $data),200);
+		}else{
+			$view = $this->view(array("message" => "No data"),404);
+		}
 		$view->setSerializationContext(SerializationContext::create()->setGroups(['Default']));
 		return $this->handleView($view);
 	}
 	
 	/**
+	 * Get a helmet by his Id, with linked resources.
 	 * @Rest\Get("helmet/{id}")
 	 * @param integer $id Id of the helmet instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   section="Helmet entity",
-	 *   description="Get helmet from database by ID."
+	 *   description="Get helmet from database by ID.",
+	 *  statusCodes={
+	 *   	200 = "Ok",
+	 *   	404 = "Not found"
+	 *   } 
 	 * )
 	 */
 	public function getHelmetByIdAction($id){
@@ -583,6 +672,7 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Insert a helmet in the database.
 	 * @Rest\Put("helmet")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
@@ -619,7 +709,11 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso that holds the Helmet."
 	 *   	}
 	 *   },
-	 * section="Helmet entity"
+	 * section="Helmet entity",
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	406 = "Not Acceptable"
+	 *   }
 	 * )
 	 *
 	 **/
@@ -649,7 +743,9 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Update a helmet in the database.
 	 * @Rest\Post("helmet/{id}")
+	 * @param integer $id Id of the helmet instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   description="Update helmet in database.",
@@ -685,7 +781,12 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso that holds the Helmet."
 	 *   	}
 	 *   },
-	 * section="Helmet entity"
+	 * section="Helmet entity",
+	 * statusCodes={
+	 *   	200 = "Ok",
+	 *   	418 = "I’m a teapot",
+	 *   	422 = "Unprocessable entity"
+	 *   }
 	 * )
 	 *
 	 **/
@@ -719,6 +820,7 @@ class DefaultRestController extends FOSRestController {
 	}
 	
 	/**
+	 * Insert a register link in the database.
 	 * @Rest\Put("register")
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
@@ -749,7 +851,11 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso to register in the guild."
 	 *   	}
 	 *   },
-	 *  section="Register entity" 
+	 *  section="Register entity",
+	 *  statusCodes={
+	 *   	200 = "Ok",
+	 *   	406 = "Not Acceptable"
+	 *   }
 	 * )
 	 **/ 
 	public function putRegisterAction(){
@@ -776,7 +882,9 @@ class DefaultRestController extends FOSRestController {
 	}
 
 	/**
+	 * Update a register link in the database.
 	 * @Rest\Post("register/{id}")
+	 * @param integer $id Id of the register instance.
 	 * @return \Symfony\Component\HttpFoundation\Response
 	 * @ApiDoc(
 	 *   description="Update a perso in a guild",
@@ -806,7 +914,11 @@ class DefaultRestController extends FOSRestController {
 	 *   		"description" = "The perso to register in the guild."
 	 *   	}
 	 *   },
-	 *  section="Register entity"
+	 *  section="Register entity",
+	 *  statusCodes={
+	 *   	200 = "Ok",
+	 *   	422 = "Unprocessable entity"
+	 *   }
 	 * )
 	 **/
 	public function postRegisterAction($id){

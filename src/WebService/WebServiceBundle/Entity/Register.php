@@ -21,14 +21,14 @@ class Register extends BaseEntity
 {
 	/**
 	 * The level of the guild.
-	 * @var Integer
+	 * @var \Integer
 	 * @ORM\Column(type="integer")
 	 * @Groups({"ById"})
 	 */
 	private $level;
 	/**
 	 * The rank of the guild.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string")
 	 * @Groups({"ById"})
 	 */

@@ -22,7 +22,7 @@ class Perso extends BaseEntity
 {
 	/**
 	 * The name of the perso.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Expose()
 	 * @Groups({"Default", "ById", "StuffById"})
@@ -30,7 +30,7 @@ class Perso extends BaseEntity
 	private $name;
 	/**
 	 * The level of the perso.
-	 * @var Integer.
+	 * @var \Integer.
 	 * @ORM\Column(type="integer")
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
@@ -38,7 +38,7 @@ class Perso extends BaseEntity
 	private $level;
 	/**
 	 * The class of the perso.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
@@ -54,7 +54,7 @@ class Perso extends BaseEntity
 	private $stuff;
 	/**
 	 * The race of the perso.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
@@ -62,7 +62,7 @@ class Perso extends BaseEntity
 	private $race;
 	/**
 	 * The sex of the perso.
-	 * @var String.
+	 * @var \String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
@@ -80,7 +80,7 @@ class Perso extends BaseEntity
 	
 	/**
 	 * Self-referencing field.
-	 * @var integer
+	 * @var \Integer
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="contact")
 	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
 	 */
@@ -88,7 +88,7 @@ class Perso extends BaseEntity
 	
 	/**
 	 * The list of contact.
-	 * @var Integer
+	 * @var \Integer
 	 * @ORM\OneToMany(targetEntity="Perso", mappedBy="parent")
 	 * @Expose()
 	 * @Groups({"ById"})
