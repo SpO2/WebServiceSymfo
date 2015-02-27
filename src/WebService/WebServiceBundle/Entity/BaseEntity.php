@@ -8,7 +8,9 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Groups;
 
 /**
- *
+ * Base Entity to extend.
+ * @author romain
+ * @package src\Entity
  * @ORM\MappedSuperclass
  * @ORM\HasLifecycleCallbacks()
  */

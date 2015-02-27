@@ -10,22 +10,32 @@ use JMS\Serializer\Annotation\MaxDepth;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
+ * Register Entity - relation between guild and perso.
+ * 
+ * @author romain
+ * @package src\Entity
  * @ORM\Entity
  * @ORM\Table(name="register")
  */
 class Register extends BaseEntity 
 {
 	/**
+	 * The level of the guild.
+	 * @var Integer
 	 * @ORM\Column(type="integer")
 	 * @Groups({"ById"})
 	 */
 	private $level;
 	/**
+	 * The rank of the guild.
+	 * @var String.
 	 * @ORM\Column(type="string")
 	 * @Groups({"ById"})
 	 */
 	private $rang;
 	/**
+	 * The guild to register to.
+	 * @var Guild.
 	 * @ORM\ManyToOne(targetEntity="Guild", inversedBy="register")
 	 * @ORM\JoinColumn(name="guild_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @Groups({"ById"})
@@ -33,6 +43,8 @@ class Register extends BaseEntity
 	 */
 	private $guild;
 	/**
+	 * The perso registered in the guild.
+	 * @var Perso.
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="register")
 	 * @ORM\JoinColumn(name="perso_id", referencedColumnName="id", onDelete="CASCADE")
 	 * @Groups({"ById"})

@@ -11,6 +11,9 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Symfony\Component\Config\Definition\IntegerNode;
 
 /**
+ * Perso Entity - Store the perso.
+ * @author romain
+ * @package src\Entity
  * @ORM\Entity
  * @ORM\Table(name="perso")
  * @ExclusionPolicy("All")
@@ -18,36 +21,48 @@ use Symfony\Component\Config\Definition\IntegerNode;
 class Perso extends BaseEntity 
 {
 	/**
+	 * The name of the perso.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Expose()
 	 * @Groups({"Default", "ById", "StuffById"})
 	 */
 	private $name;
 	/**
+	 * The level of the perso.
+	 * @var Integer.
 	 * @ORM\Column(type="integer")
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
 	 */
 	private $level;
 	/**
+	 * The class of the perso.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
 	 */
 	private $class;
 	/**
+	 * The stuff linked to the perso.
+	 * @var Stuff.
 	 * @ORM\OneToMany(targetEntity="Stuff", mappedBy="perso")
 	 * @Expose()
 	 * @Groups({"ById"})
 	 */
 	private $stuff;
 	/**
+	 * The race of the perso.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
 	 */
 	private $race;
 	/**
+	 * The sex of the perso.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default", "ById", "StuffById"})
 	 * @Expose()
@@ -55,6 +70,8 @@ class Perso extends BaseEntity
 	private $sexe;
 	
 	/**
+	 * The registering link between perso and guild.
+	 * @var Register.
 	 * @ORM\OneToMany(targetEntity="Register", mappedBy="perso")
 	 * @Groups({"ById"})
 	 * @Expose()
@@ -62,7 +79,7 @@ class Perso extends BaseEntity
 	private $register;
 	
 	/**
-	 * 
+	 * Self-referencing field.
 	 * @var integer
 	 * @ORM\ManyToOne(targetEntity="Perso", inversedBy="contact")
 	 * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
@@ -70,7 +87,7 @@ class Perso extends BaseEntity
 	private $parent;
 	
 	/**
-	 * 
+	 * The list of contact.
 	 * @var Integer
 	 * @ORM\OneToMany(targetEntity="Perso", mappedBy="parent")
 	 * @Expose()

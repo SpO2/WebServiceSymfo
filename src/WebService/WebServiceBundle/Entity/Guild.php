@@ -8,22 +8,32 @@ use JMS\Serializer\Annotation\Groups;
 use JMS\Serializer\Annotation\MaxDepth;
 
 /**
+ * Guild Entity - Store Guilds.
+ * 
+ * @author romain
+ * @package src\Entity
  * @ORM\Entity
  * @ORM\Table(name="guild")
  */
 class Guild extends BaseEntity 
 {
 	/**
+	 * The name of the guild.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default","ById"})
 	 */
 	private $name;
 	/**
+	 * The banner of the guild.
+	 * @var String.
 	 * @ORM\Column(type="string", length=100)
 	 * @Groups({"Default","ById"})
 	 */
 	private $banner;
 	/**
+	 * The link to register to the guild.
+	 * @var Register.
 	 * @ORM\OneToMany(targetEntity="Register", mappedBy="guild")
 	 * @Groups({"ById"})
 	 */
